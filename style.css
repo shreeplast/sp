@@ -1,13 +1,29 @@
-body {
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
     font-family: Arial, sans-serif;
     background: #000;
     color: #fff;
+    line-height: 1.6;
+}
+
+/* HERO */
+.hero {
+    min-height: 100vh;
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                url("images/work1.jpg") center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
 }
 
-.hero {
-    padding: 50px 20px;
+.hero-content {
+    padding: 20px;
 }
 
 .logo {
@@ -15,33 +31,126 @@ body {
     margin-bottom: 20px;
 }
 
-h1 {
-    color: orange;
+.hero h1 {
     font-size: 48px;
+    color: orange;
+}
+
+.hero h2 {
+    color: #ffb347;
     margin: 10px 0;
 }
 
-h2 {
-    color: #ffb347;
+.hero-buttons {
+    margin-top: 20px;
 }
 
+.btn {
+    display: inline-block;
+    margin: 10px;
+    padding: 12px 25px;
+    background: orange;
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 30px;
+}
+
+.btn.whatsapp {
+    background: #25D366;
+    color: #fff;
+}
+
+/* SERVICES */
 .services {
+    padding: 50px 20px;
     background: #111;
-    padding: 40px;
+    text-align: center;
 }
 
-.services ul {
-    list-style: none;
-    padding: 0;
+.services h2 {
+    margin-bottom: 30px;
+    color: orange;
 }
 
-.services li {
-    font-size: 20px;
-    padding: 8px;
+.service-box {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    max-width: 900px;
+    margin: auto;
 }
 
+.service-box div {
+    background: #000;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #333;
+}
+
+/* GALLERY */
+.gallery {
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.gallery h2 {
+    margin-bottom: 30px;
+    color: orange;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.gallery-grid img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+/* CONTACT */
+.contact {
+    background: #111;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.contact h2 {
+    color: orange;
+    margin-bottom: 15px;
+}
+
+/* FOOTER */
 footer {
     background: #000;
+    text-align: center;
     padding: 15px;
     font-size: 14px;
+}
+
+/* FLOATING WHATSAPP */
+.whatsapp-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #25D366;
+    color: #fff;
+    font-size: 26px;
+    padding: 14px 16px;
+    border-radius: 50%;
+    text-decoration: none;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+    .hero h1 {
+        font-size: 34px;
+    }
+
+    .logo {
+        width: 140px;
+    }
 }
