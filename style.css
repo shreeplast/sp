@@ -212,11 +212,12 @@ footer {
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
-/* MOBILE */
-@media (max-width: 600px) {
-    .hero h1 {
-        font-size: 34px;
+@media (max-width: 768px) {
+    .gallery-grid img {
+        height: 180px;
     }
+}
+
 
     .logo {
         width: 140px;
