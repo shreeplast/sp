@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shree Plast - Signage Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f2f2f2;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-box {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 800px;
+            margin: auto;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #0a7f3f;
+            color: white;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #086b34;
+        }
+
+        .preview-area {
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .board {
+            border: 3px solid #333;
+            padding: 20px;
+            text-align: center;
+            background: white;
+            min-height: 120px;
+        }
+
+        .big {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .medium {
+            font-size: 18px;
+        }
+
+        .small {
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<h1>Shree Plast - Signage Layout Generator</h1>
+
+<div class="form-box">
+    <input type="text" id="shopName" placeholder="Shop Name">
+    <input type="text" id="tagline" placeholder="Tagline">
+    <textarea id="services" placeholder="Services (Example: Shirts | Trousers | Blazers)"></textarea>
+
+    <label>Background Color</label>
+    <input type="color" id="bgColor" value="#ffffff">
+
+    <label>Text Color</label>
+    <input type="color" id="textColor" value="#000000">
+
+    <button onclick="generateLayouts()">Generate 6 Layouts</button>
+</div>
+
+<div class="preview-area" id="preview"></div>
+
+<script>
+
+function generateLayouts() {
+
+    let name = document.getElementById("shopName").value;
+    let tagline = document.getElementById("tagline").value;
+    let services = document.getElementById("services").value;
+    let bgColor = document.getElementById("bgColor").value;
+    let textColor = document.getElementById("textColor").value;
+
+    let preview = document.getElementById("preview");
+    preview.innerHTML = "";
+
+    for (let i = 1; i <= 6; i++) {
+
+        let board = document.createElement("div");
+        board.className = "board";
+        board.style.backgroundColor = bgColor;
+        board.style.color = textColor;
+
+        if (i === 1) {
+            board.innerHTML = `
+                <div class="big">${name}</div>
+                <div class="medium">${tagline}</div>
+                <div class="small">${services}</div>
+            `;
+        }
+
+        if (i === 2) {
+            board.innerHTML = `
+                <div style="display:flex; justify-content:space-between;">
+                    <div style="font-size:26px;">★</div>
+                    <div class="big">${name}</div>
+                </div>
+                <div class="medium">${tagline}</div>
+            `;
+        }
+
+        if (i === 3) {
+            board.innerHTML = `
+                <div class="big" style="font-size:40px;">${name}</div>
+            `;
+        }
+
+        if (i === 4) {
+            board.innerHTML = `
+                <div style="background:${textColor}; color:${bgColor}; padding:10px;">
+                    <div class="big">${name}</div>
+                </div>
+                <div class="medium">${tagline}</div>
+            `;
+        }
+
+        if (i === 5) {
+            board.innerHTML = `
+                <div style="border:2px solid ${textColor}; padding:10px;">
+                    <div class="big">${name}</div>
+                    <div class="small">${services}</div>
+                </div>
+            `;
+        }
+
+        if (i === 6) {
+            board.innerHTML = `
+                <div class="big">${name}</div>
+                <div style="margin-top:20px; font-size:12px;">${services}</div>
+            `;
+        }
+
+        preview.appendChild(board);
+    }
+}
+
+</script>
+
+</body>
+</html>
