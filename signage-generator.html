@@ -55,26 +55,33 @@
         }
 
         .board {
-            border: 3px solid #333;
-            padding: 20px;
-            text-align: center;
-            background: white;
-            min-height: 120px;
+        border: 4px solid #222;
+        aspect-ratio: 5 / 1;   /* Long signage shape */
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background: white;
+        text-align: center;
+        overflow: hidden;  
         }
 
         .big {
-            font-size: 28px;
-            font-weight: bold;
+        font-size: 42px;
+        font-weight: 800;
+        letter-spacing: 1px;
         }
 
         .medium {
-            font-size: 18px;
-        }
+        font-size: 20px;
+        margin-top: 8px;
+       }
 
         .small {
-            font-size: 14px;
-            margin-top: 8px;
-        }
+        font-size: 16px;
+        margin-top: 12px;
+        letter-spacing: 1px;
+      }
 
     </style>
 </head>
