@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Shree Plast - Advanced Signage Generator</title>
+<title>Shree Plast - Pro Signage Engine</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Oswald:wght@600&family=Poppins:wght@600&display=swap" rel="stylesheet">
 
 <style>
-
 body{
     font-family:Montserrat,sans-serif;
     background:#f4f4f4;
@@ -53,33 +52,24 @@ button{
 }
 
 .layouts{
-    margin-top:50px;
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(450px,1fr));
-    gap:40px;
+    margin-top:60px;
+    display:flex;
+    flex-direction:column;
+    gap:60px;
+    align-items:center;
 }
 
 .board{
-    position:relative;
-    border-radius:16px;
+    border-radius:18px;
     padding:30px;
     display:flex;
     align-items:center;
     justify-content:center;
     overflow:hidden;
-    box-shadow:0 15px 30px rgba(0,0,0,0.15);
-}
-
-.board-inner{
-    display:flex;
-    align-items:center;
-    width:100%;
-    height:100%;
+    box-shadow:0 20px 40px rgba(0,0,0,0.15);
 }
 
 .logo{
-    max-height:80%;
-    max-width:30%;
     object-fit:contain;
 }
 
@@ -87,25 +77,26 @@ button{
     display:flex;
     flex-direction:column;
     justify-content:center;
-    white-space:nowrap;
+    overflow:hidden;
 }
 
 .name{
     font-weight:800;
+    white-space:nowrap;
 }
 
 .services{
-    margin-top:8px;
-    font-size:14px;
+    margin-top:10px;
     letter-spacing:2px;
     text-transform:uppercase;
+    white-space:nowrap;
 }
 
 </style>
 </head>
 <body>
 
-<h1>Shree Plast – Advanced Signage Generator</h1>
+<h1>Shree Plast – Professional Signage Generator</h1>
 
 <div class="generator-box">
 
@@ -127,7 +118,7 @@ button{
 <option value="top">Logo Top</option>
 </select>
 
-<button onclick="generateBoards()">Generate Layouts</button>
+<button onclick="generateBoard()">Generate Layout</button>
 
 </div>
 
@@ -135,53 +126,52 @@ button{
 
 <script>
 
-function generateBoards(){
+function generateBoard(){
 
 let name = document.getElementById("shopName").value.trim();
 let services = document.getElementById("services").value.trim();
-let width = parseFloat(document.getElementById("width").value);
-let height = parseFloat(document.getElementById("height").value);
+let widthFt = parseFloat(document.getElementById("width").value);
+let heightFt = parseFloat(document.getElementById("height").value);
 let logoFile = document.getElementById("logoUpload").files[0];
 let logoPosition = document.getElementById("logoPosition").value;
 
-if(!name || !width || !height){
+if(!name || !widthFt || !heightFt){
     alert("Enter name and board size");
     return;
-}
-
-let ratio = width / height;
-let boardHeight = 200;
-let boardWidth = boardHeight * ratio;
-
-if(boardWidth > 1000){
-    boardWidth = 1000;
-    boardHeight = boardWidth / ratio;
 }
 
 let output = document.getElementById("output");
 output.innerHTML = "";
 
-let colors = [
-["#0c1b2a","#ffffff"],
-["#000000","#f4c430"],
-["#ffffff","#c40000"],
-["#13294b","#ffb703"]
-];
+/* SCALE LOGIC */
+let baseHeight = 250;
+let ratio = widthFt / heightFt;
+let boardHeight = baseHeight;
+let boardWidth = boardHeight * ratio;
 
-colors.forEach(colorSet => {
+/* Limit max width */
+if(boardWidth > 1200){
+    boardWidth = 1200;
+    boardHeight = boardWidth / ratio;
+}
 
 let board = document.createElement("div");
 board.className = "board";
-board.style.background = colorSet[0];
-board.style.color = colorSet[1];
 board.style.width = boardWidth + "px";
 board.style.height = boardHeight + "px";
+board.style.background = "#13294b";
+board.style.color = "#ffffff";
 
 let inner = document.createElement("div");
-inner.className = "board-inner";
+inner.style.display = "flex";
+inner.style.alignItems = "center";
+inner.style.width = "100%";
+inner.style.height = "100%";
+inner.style.gap = "30px";
 
 let textBlock = document.createElement("div");
 textBlock.className = "text-block";
+textBlock.style.flex = "1";
 
 let nameEl = document.createElement("div");
 nameEl.className = "name";
@@ -194,58 +184,68 @@ servicesEl.innerText = services;
 textBlock.appendChild(nameEl);
 if(services) textBlock.appendChild(servicesEl);
 
-if(logoFile){
+function finalizeLayout(logoImg){
 
-let reader = new FileReader();
-reader.onload = function(e){
+if(logoImg){
 
-let img = document.createElement("img");
-img.src = e.target.result;
-img.className = "logo";
+let logoMaxHeight = boardHeight * 0.6;
+logoImg.style.maxHeight = logoMaxHeight + "px";
+logoImg.style.maxWidth = boardWidth * 0.3 + "px";
+logoImg.className = "logo";
 
 if(logoPosition === "left"){
 inner.style.flexDirection = "row";
-inner.appendChild(img);
+inner.appendChild(logoImg);
 inner.appendChild(textBlock);
-textBlock.style.marginLeft = "20px";
 }
 
 if(logoPosition === "right"){
 inner.style.flexDirection = "row";
 inner.appendChild(textBlock);
-inner.appendChild(img);
-textBlock.style.marginRight = "20px";
+inner.appendChild(logoImg);
 }
 
 if(logoPosition === "top"){
 inner.style.flexDirection = "column";
-inner.appendChild(img);
+inner.appendChild(logoImg);
 inner.appendChild(textBlock);
-img.style.marginBottom = "10px";
 }
-
-};
-
-reader.readAsDataURL(logoFile);
 
 }else{
 inner.style.justifyContent = "center";
 inner.appendChild(textBlock);
 }
 
+/* FONT SCALING BASED ON HEIGHT */
+let nameSize = boardHeight * 0.25;
+let serviceSize = boardHeight * 0.08;
+
+autoFit(nameEl, nameSize);
+autoFit(servicesEl, serviceSize);
+
 board.appendChild(inner);
 output.appendChild(board);
+}
 
-autoResizeText(nameEl, boardWidth * 0.12);
-});
+if(logoFile){
+let reader = new FileReader();
+reader.onload = function(e){
+let img = document.createElement("img");
+img.src = e.target.result;
+finalizeLayout(img);
+};
+reader.readAsDataURL(logoFile);
+}else{
+finalizeLayout(null);
+}
 
 }
 
-function autoResizeText(element, maxSize){
+function autoFit(element, maxSize){
 let size = maxSize;
 element.style.fontSize = size + "px";
 
-while(element.scrollWidth > element.parentElement.clientWidth && size > 12){
+while(element.scrollWidth > element.parentElement.clientWidth && size > 10){
 size--;
 element.style.fontSize = size + "px";
 }
