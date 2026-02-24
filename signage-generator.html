@@ -3,12 +3,12 @@
 <head>
 <title>Shree Plast - Smart Signage Generator</title>
 
-<!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=Poppins:wght@500;700&family=Oswald:wght@600&family=Playfair+Display:wght@700&family=Raleway:wght@700&family=Bebas+Neue&display=swap" rel="stylesheet">
 
 <style>
+
 body{
-    font-family: 'Montserrat', sans-serif;
+    font-family:'Montserrat',sans-serif;
     background:#f4f4f4;
     padding:30px;
     margin:0;
@@ -56,34 +56,50 @@ button{
 .layouts{
     margin-top:40px;
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
     gap:25px;
 }
 
+/* FIXED BOARD SIZE */
 .board{
+    width:100%;
+    height:180px;   /* all boards same height */
     border-radius:10px;
-    padding:30px;
+    padding:25px;
     display:flex;
     flex-direction:column;
     justify-content:center;
     box-shadow:0 6px 15px rgba(0,0,0,0.15);
+    overflow:hidden;
 }
 
+/* SINGLE LINE FORCE */
 .name{
-    font-size:clamp(20px,4vw,38px);
+    font-size:28px;
     font-weight:800;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 
 .tagline{
-    margin-top:8px;
+    margin-top:6px;
     font-size:14px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 
 .services{
-    margin-top:12px;
+    margin-top:10px;
     font-size:13px;
     letter-spacing:1px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    text-transform:uppercase;
 }
+
 </style>
 </head>
 
@@ -114,9 +130,9 @@ button{
 
 function generateBoards(){
 
-let name = document.getElementById("shopName").value;
-let tagline = document.getElementById("tagline").value;
-let services = document.getElementById("services").value;
+let name = document.getElementById("shopName").value.trim();
+let tagline = document.getElementById("tagline").value.trim();
+let services = document.getElementById("services").value.trim();
 let w = document.getElementById("width").value;
 let h = document.getElementById("height").value;
 
@@ -125,49 +141,40 @@ if(!name || !w || !h){
     return;
 }
 
-let ratio = w/h;
-
 let output = document.getElementById("output");
 output.innerHTML = "";
 
 /* Layout 1 */
-createBoard(name, tagline, services, ratio,
-"#0c1b2a","#ffffff","Montserrat");
+createBoard(name, tagline, services,"#0c1b2a","#ffffff","Montserrat");
 
 /* Layout 2 */
-createBoard(name, tagline, services, ratio,
-"#000000","#f4c430","Playfair Display");
+createBoard(name, tagline, services,"#000000","#f4c430","Playfair Display");
 
 /* Layout 3 */
-createBoard(name, tagline, services, ratio,
-"#ffffff","#c40000","Oswald");
+createBoard(name, tagline, services,"#ffffff","#c40000","Oswald");
 
 /* Layout 4 */
-createBoard(name, tagline, services, ratio,
-"#2d2d44","#ff2e4d","Bebas Neue");
+createBoard(name, tagline, services,"#2d2d44","#ff2e4d","Bebas Neue");
 
 /* Layout 5 */
-createBoard(name, tagline, services, ratio,
-"#13294b","#ffb703","Raleway");
+createBoard(name, tagline, services,"#13294b","#ffb703","Raleway");
 
 /* Layout 6 */
-createBoard(name, tagline, services, ratio,
-"#f2f2f2","#222222","Poppins");
+createBoard(name, tagline, services,"#f2f2f2","#222222","Poppins");
 
 }
 
-function createBoard(name, tagline, services, ratio, bg, color, font){
+function createBoard(name, tagline, services, bg, color, font){
 
 let board = document.createElement("div");
 board.className = "board";
 board.style.background = bg;
 board.style.color = color;
 board.style.fontFamily = font;
-board.style.aspectRatio = ratio;
 
 board.innerHTML = `
 <div class="name">${name}</div>
-<div class="tagline">${tagline}</div>
+${tagline ? `<div class="tagline">${tagline}</div>` : ``}
 <div class="services">${services}</div>
 `;
 
