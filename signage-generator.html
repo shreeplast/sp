@@ -1,216 +1,177 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Shree Plast - Professional Signage Generator</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shree Plast - Smart Signage Generator</title>
 
 <!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=Poppins:wght@500;700&family=Oswald:wght@500;700&family=Playfair+Display:wght@600&family=Raleway:wght@500;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=Poppins:wght@500;700&family=Oswald:wght@600&family=Playfair+Display:wght@700&family=Raleway:wght@700&family=Bebas+Neue&display=swap" rel="stylesheet">
 
 <style>
-
 body{
+    font-family: 'Montserrat', sans-serif;
+    background:#f4f4f4;
+    padding:30px;
     margin:0;
-    padding:20px;
-    background:#e9e9e9;
-    font-family: 'Poppins', sans-serif;
 }
 
 h1{
     text-align:center;
-    margin-bottom:20px;
+    margin-bottom:25px;
 }
 
-.form-box{
-    background:#fff;
-    padding:20px;
-    max-width:1000px;
+.generator-box{
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.08);
+    max-width:900px;
     margin:auto;
-    border-radius:10px;
-    box-shadow:0 4px 15px rgba(0,0,0,0.15);
 }
 
 input, textarea{
     width:100%;
     padding:12px;
-    margin:8px 0;
-    font-size:15px;
+    margin-bottom:15px;
+    border:1px solid #ccc;
     border-radius:6px;
-    border:1px solid #aaa;
+    font-size:14px;
 }
 
-.row{
+.size-row{
     display:flex;
     gap:10px;
-}
-
-.row input{
-    flex:1;
 }
 
 button{
     width:100%;
     padding:14px;
-    margin-top:10px;
-    font-size:17px;
-    background:#0a7f3f;
+    background:#0b7d3b;
     color:white;
     border:none;
+    font-size:16px;
     border-radius:6px;
     cursor:pointer;
 }
 
-button:hover{
-    background:#086b34;
-}
-
-.preview-area{
+.layouts{
     margin-top:40px;
     display:grid;
-    grid-template-columns: repeat(auto-fit,minmax(350px,1fr));
-    gap:20px;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:25px;
 }
 
-/* Common board styling */
 .board{
+    border-radius:10px;
+    padding:30px;
     display:flex;
     flex-direction:column;
     justify-content:center;
-    padding:30px;
-    border-radius:6px;
-    box-shadow:0 6px 15px rgba(0,0,0,0.2);
-    text-align:center;
-    overflow:hidden;
+    box-shadow:0 6px 15px rgba(0,0,0,0.15);
 }
 
-.tag{
-    font-size:18px;
+.name{
+    font-size:clamp(20px,4vw,38px);
+    font-weight:800;
+}
+
+.tagline{
     margin-top:8px;
+    font-size:14px;
 }
 
 .services{
-    font-size:14px;
-    margin-top:14px;
+    margin-top:12px;
+    font-size:13px;
     letter-spacing:1px;
 }
-
 </style>
 </head>
 
 <body>
 
-<h1>Shree Plast - Professional Signage Generator</h1>
+<h1>Shree Plast – Professional Signage Generator</h1>
 
-<div class="form-box">
-    <input type="text" id="name" placeholder="Shop / Business Name">
+<div class="generator-box">
 
-    <input type="text" id="tagline" placeholder="Tagline (Optional)">
+<input type="text" id="shopName" placeholder="Shop / Business Name">
 
-    <textarea id="services" placeholder="Services (Example: Shirts | Trousers | Blazers)"></textarea>
+<input type="text" id="tagline" placeholder="Tagline (Optional)">
 
-    <div class="row">
-        <input type="number" id="width" placeholder="Board Width (Feet)" value="10">
-        <input type="number" id="height" placeholder="Board Height (Feet)" value="2">
-    </div>
+<textarea id="services" placeholder="Services (Eg: LED Signage | Acrylic Letters | CNC Work)"></textarea>
 
-    <button onclick="generate()">Generate 6 Professional Layouts</button>
+<div class="size-row">
+<input type="number" id="width" placeholder="Width (Feet)">
+<input type="number" id="height" placeholder="Height (Feet)">
 </div>
 
-<div class="preview-area" id="preview"></div>
+<button onclick="generateBoards()">Generate Professional Layouts</button>
+
+</div>
+
+<div class="layouts" id="output"></div>
 
 <script>
 
-function generate(){
+function generateBoards(){
 
-    let name = document.getElementById("name").value;
-    let tag = document.getElementById("tagline").value;
-    let services = document.getElementById("services").value;
-    let width = document.getElementById("width").value;
-    let height = document.getElementById("height").value;
+let name = document.getElementById("shopName").value;
+let tagline = document.getElementById("tagline").value;
+let services = document.getElementById("services").value;
+let w = document.getElementById("width").value;
+let h = document.getElementById("height").value;
 
-    if(!name){
-        alert("Please enter shop name");
-        return;
-    }
+if(!name || !w || !h){
+    alert("Please enter Name and Board Size");
+    return;
+}
 
-    let preview = document.getElementById("preview");
-    preview.innerHTML = "";
+let ratio = w/h;
 
-    let ratio = width/height;
+let output = document.getElementById("output");
+output.innerHTML = "";
 
-    const layouts = [
+/* Layout 1 */
+createBoard(name, tagline, services, ratio,
+"#0c1b2a","#ffffff","Montserrat");
 
-        // 1 Modern Blue
-        {
-            bg:"#0d1b2a",
-            color:"#ffffff",
-            font:"'Montserrat', sans-serif",
-            nameSize:"38px"
-        },
+/* Layout 2 */
+createBoard(name, tagline, services, ratio,
+"#000000","#f4c430","Playfair Display");
 
-        // 2 Luxury Black Gold
-        {
-            bg:"#000000",
-            color:"#d4af37",
-            font:"'Playfair Display', serif",
-            nameSize:"40px"
-        },
+/* Layout 3 */
+createBoard(name, tagline, services, ratio,
+"#ffffff","#c40000","Oswald");
 
-        // 3 Bold Red Retail
-        {
-            bg:"#ffffff",
-            color:"#d00000",
-            font:"'Oswald', sans-serif",
-            nameSize:"42px"
-        },
+/* Layout 4 */
+createBoard(name, tagline, services, ratio,
+"#2d2d44","#ff2e4d","Bebas Neue");
 
-        // 4 Elegant Minimal
-        {
-            bg:"#f5f5f5",
-            color:"#222222",
-            font:"'Raleway', sans-serif",
-            nameSize:"36px"
-        },
+/* Layout 5 */
+createBoard(name, tagline, services, ratio,
+"#13294b","#ffb703","Raleway");
 
-        // 5 Fashion Style
-        {
-            bg:"#2b2d42",
-            color:"#ef233c",
-            font:"'Bebas Neue', sans-serif",
-            nameSize:"44px"
-        },
+/* Layout 6 */
+createBoard(name, tagline, services, ratio,
+"#f2f2f2","#222222","Poppins");
 
-        // 6 Clean Corporate
-        {
-            bg:"#14213d",
-            color:"#fca311",
-            font:"'Poppins', sans-serif",
-            nameSize:"38px"
-        }
+}
 
-    ];
+function createBoard(name, tagline, services, ratio, bg, color, font){
 
-    layouts.forEach(layout => {
+let board = document.createElement("div");
+board.className = "board";
+board.style.background = bg;
+board.style.color = color;
+board.style.fontFamily = font;
+board.style.aspectRatio = ratio;
 
-        let board = document.createElement("div");
-        board.className="board";
-        board.style.background=layout.bg;
-        board.style.color=layout.color;
-        board.style.fontFamily=layout.font;
-        board.style.aspectRatio=ratio;
+board.innerHTML = `
+<div class="name">${name}</div>
+<div class="tagline">${tagline}</div>
+<div class="services">${services}</div>
+`;
 
-        board.innerHTML = `
-            <div style="font-size:${layout.nameSize}; font-weight:800; letter-spacing:2px;">
-                ${name}
-            </div>
-            <div class="tag">${tag}</div>
-            <div class="services">${services}</div>
-        `;
-
-        preview.appendChild(board);
-
-    });
-
+document.getElementById("output").appendChild(board);
 }
 
 </script>
