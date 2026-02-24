@@ -1,126 +1,133 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Shree Plast - Smart Signage Generator</title>
+<title>Shree Plast - Advanced Signage Generator</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=Poppins:wght@500;700&family=Oswald:wght@600&family=Playfair+Display:wght@700&family=Raleway:wght@700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Oswald:wght@600&family=Poppins:wght@600&display=swap" rel="stylesheet">
 
 <style>
 
 body{
-    font-family:'Montserrat',sans-serif;
+    font-family:Montserrat,sans-serif;
     background:#f4f4f4;
-    padding:30px;
+    padding:40px;
     margin:0;
 }
 
 h1{
     text-align:center;
-    margin-bottom:25px;
+    margin-bottom:30px;
 }
 
 .generator-box{
     background:white;
     padding:25px;
     border-radius:12px;
-    box-shadow:0 8px 25px rgba(0,0,0,0.08);
-    max-width:900px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+    max-width:1000px;
     margin:auto;
 }
 
-input, textarea{
+input, textarea, select{
     width:100%;
     padding:12px;
     margin-bottom:15px;
     border:1px solid #ccc;
     border-radius:6px;
-    font-size:14px;
 }
 
-.size-row{
+.row{
     display:flex;
-    gap:10px;
+    gap:15px;
 }
 
 button{
-    width:100%;
     padding:14px;
+    width:100%;
     background:#0b7d3b;
     color:white;
     border:none;
-    font-size:16px;
     border-radius:6px;
+    font-size:16px;
     cursor:pointer;
 }
 
 .layouts{
-    margin-top:40px;
+    margin-top:50px;
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
-    gap:25px;
+    grid-template-columns:repeat(auto-fit,minmax(450px,1fr));
+    gap:40px;
 }
 
-/* FIXED BOARD SIZE */
 .board{
+    position:relative;
+    border-radius:16px;
+    padding:30px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    box-shadow:0 15px 30px rgba(0,0,0,0.15);
+}
+
+.board-inner{
+    display:flex;
+    align-items:center;
     width:100%;
-    height:180px;   /* all boards same height */
-    border-radius:10px;
-    padding:25px;
+    height:100%;
+}
+
+.logo{
+    max-height:80%;
+    max-width:30%;
+    object-fit:contain;
+}
+
+.text-block{
     display:flex;
     flex-direction:column;
     justify-content:center;
-    box-shadow:0 6px 15px rgba(0,0,0,0.15);
-    overflow:hidden;
+    white-space:nowrap;
 }
 
-/* SINGLE LINE FORCE */
 .name{
-    font-size:28px;
     font-weight:800;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-}
-
-.tagline{
-    margin-top:6px;
-    font-size:14px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
 }
 
 .services{
-    margin-top:10px;
-    font-size:13px;
-    letter-spacing:1px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
+    margin-top:8px;
+    font-size:14px;
+    letter-spacing:2px;
     text-transform:uppercase;
 }
 
 </style>
 </head>
-
 <body>
 
-<h1>Shree Plast – Professional Signage Generator</h1>
+<h1>Shree Plast – Advanced Signage Generator</h1>
 
 <div class="generator-box">
 
-<input type="text" id="shopName" placeholder="Shop / Business Name">
+<input type="text" id="shopName" placeholder="Shop Name">
 
-<input type="text" id="tagline" placeholder="Tagline (Optional)">
+<textarea id="services" placeholder="Services (CABINETS | TROLLEYS | ACCESSORIES)"></textarea>
 
-<textarea id="services" placeholder="Services (Eg: LED Signage | Acrylic Letters | CNC Work)"></textarea>
-
-<div class="size-row">
+<div class="row">
 <input type="number" id="width" placeholder="Width (Feet)">
 <input type="number" id="height" placeholder="Height (Feet)">
 </div>
 
-<button onclick="generateBoards()">Generate Professional Layouts</button>
+<label>Upload Logo (Optional)</label>
+<input type="file" id="logoUpload" accept="image/*">
+
+<select id="logoPosition">
+<option value="left">Logo Left</option>
+<option value="right">Logo Right</option>
+<option value="top">Logo Top</option>
+</select>
+
+<button onclick="generateBoards()">Generate Layouts</button>
 
 </div>
 
@@ -131,54 +138,117 @@ button{
 function generateBoards(){
 
 let name = document.getElementById("shopName").value.trim();
-let tagline = document.getElementById("tagline").value.trim();
 let services = document.getElementById("services").value.trim();
-let w = document.getElementById("width").value;
-let h = document.getElementById("height").value;
+let width = parseFloat(document.getElementById("width").value);
+let height = parseFloat(document.getElementById("height").value);
+let logoFile = document.getElementById("logoUpload").files[0];
+let logoPosition = document.getElementById("logoPosition").value;
 
-if(!name || !w || !h){
-    alert("Please enter Name and Board Size");
+if(!name || !width || !height){
+    alert("Enter name and board size");
     return;
+}
+
+let ratio = width / height;
+let boardHeight = 200;
+let boardWidth = boardHeight * ratio;
+
+if(boardWidth > 1000){
+    boardWidth = 1000;
+    boardHeight = boardWidth / ratio;
 }
 
 let output = document.getElementById("output");
 output.innerHTML = "";
 
-/* Layout 1 */
-createBoard(name, tagline, services,"#0c1b2a","#ffffff","Montserrat");
+let colors = [
+["#0c1b2a","#ffffff"],
+["#000000","#f4c430"],
+["#ffffff","#c40000"],
+["#13294b","#ffb703"]
+];
 
-/* Layout 2 */
-createBoard(name, tagline, services,"#000000","#f4c430","Playfair Display");
-
-/* Layout 3 */
-createBoard(name, tagline, services,"#ffffff","#c40000","Oswald");
-
-/* Layout 4 */
-createBoard(name, tagline, services,"#2d2d44","#ff2e4d","Bebas Neue");
-
-/* Layout 5 */
-createBoard(name, tagline, services,"#13294b","#ffb703","Raleway");
-
-/* Layout 6 */
-createBoard(name, tagline, services,"#f2f2f2","#222222","Poppins");
-
-}
-
-function createBoard(name, tagline, services, bg, color, font){
+colors.forEach(colorSet => {
 
 let board = document.createElement("div");
 board.className = "board";
-board.style.background = bg;
-board.style.color = color;
-board.style.fontFamily = font;
+board.style.background = colorSet[0];
+board.style.color = colorSet[1];
+board.style.width = boardWidth + "px";
+board.style.height = boardHeight + "px";
 
-board.innerHTML = `
-<div class="name">${name}</div>
-${tagline ? `<div class="tagline">${tagline}</div>` : ``}
-<div class="services">${services}</div>
-`;
+let inner = document.createElement("div");
+inner.className = "board-inner";
 
-document.getElementById("output").appendChild(board);
+let textBlock = document.createElement("div");
+textBlock.className = "text-block";
+
+let nameEl = document.createElement("div");
+nameEl.className = "name";
+nameEl.innerText = name;
+
+let servicesEl = document.createElement("div");
+servicesEl.className = "services";
+servicesEl.innerText = services;
+
+textBlock.appendChild(nameEl);
+if(services) textBlock.appendChild(servicesEl);
+
+if(logoFile){
+
+let reader = new FileReader();
+reader.onload = function(e){
+
+let img = document.createElement("img");
+img.src = e.target.result;
+img.className = "logo";
+
+if(logoPosition === "left"){
+inner.style.flexDirection = "row";
+inner.appendChild(img);
+inner.appendChild(textBlock);
+textBlock.style.marginLeft = "20px";
+}
+
+if(logoPosition === "right"){
+inner.style.flexDirection = "row";
+inner.appendChild(textBlock);
+inner.appendChild(img);
+textBlock.style.marginRight = "20px";
+}
+
+if(logoPosition === "top"){
+inner.style.flexDirection = "column";
+inner.appendChild(img);
+inner.appendChild(textBlock);
+img.style.marginBottom = "10px";
+}
+
+};
+
+reader.readAsDataURL(logoFile);
+
+}else{
+inner.style.justifyContent = "center";
+inner.appendChild(textBlock);
+}
+
+board.appendChild(inner);
+output.appendChild(board);
+
+autoResizeText(nameEl, boardWidth * 0.12);
+});
+
+}
+
+function autoResizeText(element, maxSize){
+let size = maxSize;
+element.style.fontSize = size + "px";
+
+while(element.scrollWidth > element.parentElement.clientWidth && size > 12){
+size--;
+element.style.fontSize = size + "px";
+}
 }
 
 </script>
