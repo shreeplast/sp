@@ -254,5 +254,50 @@ footer {
         height: 280px;
     }
 }
+/* NAVBAR */
+.navbar {
+    width: 100%;
+    background: #111;
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-container {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo {
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.nav-links a {
+    color: #fff;
+    margin-left: 20px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: #ff9800;
+}
+
+.generate-btn {
+    background: #00b894;
+    padding: 8px 15px;
+    border-radius: 5px;
+}
+
+.generate-btn:hover {
+    background: #009f7a;
+}
 
 }
