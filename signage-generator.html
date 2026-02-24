@@ -4,7 +4,38 @@
 <meta charset="UTF-8">
 <title>Shree Plast - Pro Signage Generator</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@700&family=Oswald:wght@700&family=Playfair+Display:wght@700&family=Bebas+Neue&family=Raleway:wght@800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?
+family=Montserrat:wght@700&
+family=Poppins:wght@700&
+family=Oswald:wght@700&
+family=Playfair+Display:wght@700&
+family=Bebas+Neue&
+family=Raleway:wght@800&
+family=Anton&
+family=Barlow:wght@800&
+family=League+Spartan:wght@800&
+family=Archivo+Black&
+family=Roboto:wght@700&
+family=Lato:wght@700&
+family=Ubuntu:wght@700&
+family=Inter:wght@800&
+family=Mulish:wght@800&
+family=Manrope:wght@800&
+family=Nunito:wght@800&
+family=Exo:wght@800&
+family=Orbitron:wght@800&
+family=Rubik:wght@800&
+family=Work+Sans:wght@800&
+family=Cabin:wght@700&
+family=DM+Sans:wght@800&
+family=Quicksand:wght@800&
+family=Fira+Sans:wght@800&
+family=PT+Sans:wght@700&
+family=Heebo:wght@800&
+family=Kanit:wght@800&
+family=Titillium+Web:wght@800&
+family=Teko:wght@700&
+display=swap" rel="stylesheet">
 
 <style>
 body {
@@ -121,6 +152,8 @@ button {
 
 <script>
 
+let previousBatch = [];
+
 function generateBoards(){
 
 let title = document.getElementById("titleInput").value || "Your Shop Name";
@@ -133,40 +166,97 @@ let logoPosition = document.getElementById("logoPosition").value;
 let preview = document.getElementById("preview");
 preview.innerHTML = "";
 
-/* Convert Feet to Pixels */
 let boardWidth = widthFeet * 100;
 let boardHeight = heightFeet * 70;
 
-/* 6 Design Variations */
-let designs = [
-{bg:"#0d1b2a", titleColor:"#ffffff", subColor:"#fca311", font:"Montserrat"},
-{bg:"#000000", titleColor:"#f4d35e", subColor:"#ffffff", font:"Bebas Neue"},
-{bg:"#14213d", titleColor:"#ffffff", subColor:"#e5e5e5", font:"Poppins"},
-{bg:"#ffffff", titleColor:"#111111", subColor:"#444444", font:"Playfair Display"},
-{bg:"#1a1a1a", titleColor:"#00ffcc", subColor:"#ffffff", font:"Oswald"},
-{bg:"#2b2d42", titleColor:"#edf2f4", subColor:"#ef233c", font:"Raleway"}
+/* ===== 30 FONT POOL ===== */
+
+let fonts = [
+"Montserrat","Poppins","Oswald","Playfair Display","Bebas Neue",
+"Raleway","Anton","Barlow","League Spartan","Archivo Black",
+"Roboto","Lato","Ubuntu","Inter","Mulish",
+"Manrope","Nunito","Exo","Orbitron","Rubik",
+"Work Sans","Cabin","DM Sans","Quicksand","Fira Sans",
+"PT Sans","Heebo","Kanit","Titillium Web","Teko"
 ];
 
-/* Function to Auto Fit Font */
+/* ===== PROFESSIONAL BACKGROUND PALETTE ===== */
+
+let backgrounds = [
+"#000000","#111111","#1a1a1a","#222831","#14213d",
+"#0d1b2a","#1d3557","#2b2d42","#370617","#3a0ca3",
+"#003049","#264653","#2a9d8f","#344e41","#283618",
+"#780000","#6a040f","#03045e","#023e8a","#001219",
+"#ffffff","#f1faee","#edf2f4","#e9ecef","#f8f9fa"
+];
+
+/* ===== PROFESSIONAL TEXT COLORS ===== */
+
+let textColors = [
+"#ffffff","#fca311","#f4d35e","#e5e5e5","#00ffcc",
+"#ef233c","#ffd60a","#ff006e","#90e0ef","#caf0f8",
+"#111111","#000000","#2a9d8f","#ffbe0b","#fb5607",
+"#8338ec","#3a86ff","#06d6a0","#118ab2","#073b4c",
+"#d90429","#ffba08","#4361ee","#4cc9f0","#7209b7"
+];
+
+/* Random Utility */
+function randomItem(arr){
+return arr[Math.floor(Math.random()*arr.length)];
+}
+
+/* Avoid immediate repeat batch */
+function generateUniqueDesign(){
+
+let design;
+let unique = false;
+
+while(!unique){
+
+design = {
+bg: randomItem(backgrounds),
+titleColor: randomItem(textColors),
+subColor: randomItem(textColors),
+font: randomItem(fonts)
+};
+
+unique = !previousBatch.some(d =>
+d.bg === design.bg &&
+d.titleColor === design.titleColor &&
+d.subColor === design.subColor &&
+d.font === design.font
+);
+
+}
+
+return design;
+}
+
+/* Auto Fit Engine */
 function fitText(element, maxWidth, maxHeight){
 
-let size = 200; // start large
+let size = 250;
 element.style.fontSize = size + "px";
 
 while(
-    (element.scrollWidth > maxWidth || element.scrollHeight > maxHeight)
-    && size > 10
+(element.scrollWidth > maxWidth ||
+element.scrollHeight > maxHeight)
+&& size > 12
 ){
-    size--;
-    element.style.fontSize = size + "px";
+size--;
+element.style.fontSize = size + "px";
 }
 }
 
-/* Create Boards */
-designs.forEach(design => {
+/* Generate 6 New Mockups */
+previousBatch = [];
+
+for(let i=0;i<6;i++){
+
+let design = generateUniqueDesign();
+previousBatch.push(design);
 
 let board = document.createElement("div");
-board.className = "board";
 board.style.background = design.bg;
 board.style.width = boardWidth + "px";
 board.style.height = boardHeight + "px";
@@ -175,10 +265,10 @@ board.style.alignItems = "center";
 board.style.justifyContent = "center";
 board.style.padding = "20px";
 board.style.boxSizing = "border-box";
-board.style.marginBottom = "30px";
-board.style.borderRadius = "15px";
+board.style.marginBottom = "35px";
+board.style.borderRadius = "18px";
 
-/* Main Content Container */
+/* Content Container */
 let content = document.createElement("div");
 content.style.display = "flex";
 content.style.flexDirection = "column";
@@ -188,23 +278,25 @@ content.style.width = "100%";
 
 /* Title */
 let titleEl = document.createElement("div");
-titleEl.className = "title";
 titleEl.innerText = title;
 titleEl.style.color = design.titleColor;
 titleEl.style.fontFamily = design.font;
+titleEl.style.whiteSpace = "nowrap";
+titleEl.style.textAlign = "center";
 
 /* Subtitle */
 let subEl = document.createElement("div");
-subEl.className = "subtitle";
 subEl.innerText = subtitle;
 subEl.style.color = design.subColor;
 subEl.style.fontFamily = design.font;
+subEl.style.whiteSpace = "nowrap";
 subEl.style.marginTop = "10px";
+subEl.style.textAlign = "center";
 
 content.appendChild(titleEl);
 content.appendChild(subEl);
 
-/* Logo Handling */
+/* Logo Logic */
 if(logoFile){
 
 let reader = new FileReader();
@@ -215,7 +307,7 @@ logo.src = e.target.result;
 logo.style.maxHeight = boardHeight * 0.6 + "px";
 logo.style.maxWidth = boardWidth * 0.25 + "px";
 logo.style.objectFit = "contain";
-logo.style.margin = "15px";
+logo.style.margin = "20px";
 
 if(logoPosition === "left"){
 board.style.justifyContent = "space-between";
@@ -227,13 +319,12 @@ board.style.justifyContent = "space-between";
 board.appendChild(content);
 board.appendChild(logo);
 }
-else if(logoPosition === "top"){
+else{
 board.style.flexDirection = "column";
 board.appendChild(logo);
 board.appendChild(content);
 }
 
-/* Fit text AFTER layout */
 setTimeout(()=>{
 fitText(titleEl, content.clientWidth, boardHeight * 0.5);
 fitText(subEl, content.clientWidth, boardHeight * 0.25);
@@ -244,17 +335,19 @@ reader.readAsDataURL(logoFile);
 
 }
 else{
+
 board.appendChild(content);
 
 setTimeout(()=>{
 fitText(titleEl, boardWidth * 0.9, boardHeight * 0.5);
 fitText(subEl, boardWidth * 0.9, boardHeight * 0.25);
 },10);
+
 }
 
 preview.appendChild(board);
 
-});
+}
 
 }
 
