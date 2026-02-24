@@ -234,18 +234,16 @@ return design;
 }
 
 /* Auto Fit Engine */
-function fitText(element, maxWidth, maxHeight){
+function fitTextHorizontal(element, maxWidth){
 
-let size = 250;
+let size = 300;
 element.style.fontSize = size + "px";
 
-while(
-(element.scrollWidth > maxWidth ||
-element.scrollHeight > maxHeight)
-&& size > 12
-){
-size--;
-element.style.fontSize = size + "px";
+while(element.scrollWidth > maxWidth && size > 10){
+    size -= 1;
+    element.style.fontSize = size + "px";
+}
+
 }
 }
 
@@ -284,6 +282,7 @@ titleEl.innerText = title;
 titleEl.style.color = design.titleColor;
 titleEl.style.fontFamily = design.font;
 titleEl.style.whiteSpace = "nowrap";
+titleEl.style.display = "block";
 titleEl.style.textAlign = "center";
 
 /* Subtitle */
@@ -292,9 +291,16 @@ subEl.innerText = subtitle;
 subEl.style.color = design.subColor;
 subEl.style.fontFamily = design.font;
 subEl.style.whiteSpace = "nowrap";
+subEl.style.display = "block";
 subEl.style.marginTop = "10px";
 subEl.style.textAlign = "center";
 
+titleEl.style.fontWeight = "800";
+subEl.style.fontWeight = "600";
+
+titleEl.style.letterSpacing = "2px";
+subEl.style.letterSpacing = "1px";
+    
 content.appendChild(titleEl);
 content.appendChild(subEl);
 
@@ -328,8 +334,8 @@ board.appendChild(content);
 }
 
 setTimeout(()=>{
-fitText(titleEl, content.clientWidth, boardHeight * 0.5);
-fitText(subEl, content.clientWidth, boardHeight * 0.25);
+fitTextHorizontal(titleEl, content.clientWidth);
+fitTextHorizontal(subEl, content.clientWidth);
 },10);
 
 }
@@ -341,8 +347,8 @@ else{
 board.appendChild(content);
 
 setTimeout(()=>{
-fitText(titleEl, boardWidth * 0.9, boardHeight * 0.5);
-fitText(subEl, boardWidth * 0.9, boardHeight * 0.25);
+fitTextHorizontal(titleEl, boardWidth * 0.9);
+fitTextHorizontal(subEl, boardWidth * 0.9);
 },10);
 
 }
