@@ -1,3 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Shree Plast - Pro Signage Generator</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@700&family=Oswald:wght@700&family=Playfair+Display:wght@700&family=Bebas+Neue&family=Raleway:wght@800&display=swap" rel="stylesheet">
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background:#f2f2f2;
+    padding:30px;
+}
+
+.container {
+    max-width:1000px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.1);
+}
+
+input, textarea, select {
+    width:100%;
+    padding:10px;
+    margin-bottom:15px;
+}
+
+button {
+    background:#0f7c3f;
+    color:white;
+    padding:12px;
+    border:none;
+    width:100%;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.preview-container {
+    margin-top:40px;
+}
+
+.board {
+    display:flex;
+    align-items:center;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:30px;
+    overflow:hidden;
+    transition:0.3s;
+}
+
+.board:hover {
+    transform:scale(1.01);
+}
+
+.logo {
+    max-height:120px;
+    max-width:150px;
+    margin-right:25px;
+    object-fit:contain;
+}
+
+.text-area {
+    flex:1;
+}
+
+.title {
+    margin:0;
+    line-height:1.1;
+    word-break:break-word;
+}
+
+.subtitle {
+    margin-top:10px;
+    letter-spacing:2px;
+    word-break:break-word;
+}
+
+.small-note {
+    font-size:12px;
+    opacity:0.7;
+    margin-top:5px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Shree Plast – Professional Signage Generator</h2>
+
+<input type="text" id="titleInput" placeholder="Shop Name">
+
+<textarea id="subtitleInput" placeholder="Tagline / Services"></textarea>
+
+<label>Board Width (Feet)</label>
+<input type="number" id="widthInput" placeholder="10">
+
+<label>Board Height (Feet)</label>
+<input type="number" id="heightInput" placeholder="3">
+
+<label>Upload Logo (Optional)</label>
+<input type="file" id="logoInput">
+
+<label>Logo Position</label>
+<select id="logoPosition">
+<option value="left">Left</option>
+<option value="right">Right</option>
+<option value="top">Top</option>
+</select>
+
+<button onclick="generateBoards()">Generate 6 Mockups</button>
+
+<div class="preview-container" id="preview"></div>
+
+</div>
+
 <script>
 
 function generateBoards(){
@@ -138,3 +259,5 @@ preview.appendChild(board);
 }
 
 </script>
+</body>
+</html>
