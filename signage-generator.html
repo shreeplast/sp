@@ -1,254 +1,218 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Shree Plast - Pro Signage Engine</title>
+<meta charset="UTF-8">
+<title>Shree Plast - Pro Signage Generator</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Oswald:wght@600&family=Poppins:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Poppins:wght@700&family=Oswald:wght@700&family=Playfair+Display:wght@700&family=Bebas+Neue&family=Raleway:wght@800&display=swap" rel="stylesheet">
 
 <style>
-body{
-    font-family:Montserrat,sans-serif;
-    background:#f4f4f4;
-    padding:40px;
-    margin:0;
+body {
+    font-family: Arial, sans-serif;
+    background:#f2f2f2;
+    padding:30px;
 }
 
-h1{
-    text-align:center;
-    margin-bottom:30px;
-}
-
-.generator-box{
-    background:white;
-    padding:25px;
-    border-radius:12px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+.container {
     max-width:1000px;
     margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.1);
 }
 
-input, textarea, select{
+input, textarea, select {
     width:100%;
-    padding:12px;
+    padding:10px;
     margin-bottom:15px;
-    border:1px solid #ccc;
-    border-radius:6px;
 }
 
-.row{
-    display:flex;
-    gap:15px;
-}
-
-button{
-    padding:14px;
-    width:100%;
-    background:#0b7d3b;
+button {
+    background:#0f7c3f;
     color:white;
+    padding:12px;
     border:none;
-    border-radius:6px;
-    font-size:16px;
+    width:100%;
     cursor:pointer;
+    font-weight:bold;
 }
 
-.layouts{
-    margin-top:60px;
-    display:flex;
-    flex-direction:column;
-    gap:60px;
-    align-items:center;
+.preview-container {
+    margin-top:40px;
 }
 
-.board{
-    border-radius:18px;
-    padding:30px;
+.board {
     display:flex;
     align-items:center;
-    justify-content:center;
+    padding:20px;
+    border-radius:15px;
+    margin-bottom:30px;
     overflow:hidden;
-    box-shadow:0 20px 40px rgba(0,0,0,0.15);
+    transition:0.3s;
 }
 
-.logo{
+.board:hover {
+    transform:scale(1.01);
+}
+
+.logo {
+    max-height:120px;
+    max-width:150px;
+    margin-right:25px;
     object-fit:contain;
 }
 
-.text-block{
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    overflow:hidden;
+.text-area {
+    flex:1;
 }
 
-.name{
-    font-weight:800;
-    white-space:nowrap;
+.title {
+    margin:0;
+    line-height:1.1;
+    word-break:break-word;
 }
 
-.services{
+.subtitle {
     margin-top:10px;
     letter-spacing:2px;
-    text-transform:uppercase;
-    white-space:nowrap;
+    word-break:break-word;
 }
 
+.small-note {
+    font-size:12px;
+    opacity:0.7;
+    margin-top:5px;
+}
 </style>
 </head>
+
 <body>
 
-<h1>Shree Plast – Professional Signage Generator</h1>
+<div class="container">
 
-<div class="generator-box">
+<h2>Shree Plast – Professional Signage Generator</h2>
 
-<input type="text" id="shopName" placeholder="Shop Name">
+<input type="text" id="titleInput" placeholder="Shop Name">
 
-<textarea id="services" placeholder="Services (CABINETS | TROLLEYS | ACCESSORIES)"></textarea>
+<textarea id="subtitleInput" placeholder="Tagline / Services"></textarea>
 
-<div class="row">
-<input type="number" id="width" placeholder="Width (Feet)">
-<input type="number" id="height" placeholder="Height (Feet)">
-</div>
+<label>Board Width (Feet)</label>
+<input type="number" id="widthInput" placeholder="10">
+
+<label>Board Height (Feet)</label>
+<input type="number" id="heightInput" placeholder="3">
 
 <label>Upload Logo (Optional)</label>
-<input type="file" id="logoUpload" accept="image/*">
+<input type="file" id="logoInput">
 
+<label>Logo Position</label>
 <select id="logoPosition">
-<option value="left">Logo Left</option>
-<option value="right">Logo Right</option>
-<option value="top">Logo Top</option>
+<option value="left">Left</option>
+<option value="right">Right</option>
+<option value="top">Top</option>
 </select>
 
-<button onclick="generateBoard()">Generate Layout</button>
+<button onclick="generateBoards()">Generate 6 Mockups</button>
+
+<div class="preview-container" id="preview"></div>
 
 </div>
-
-<div class="layouts" id="output"></div>
 
 <script>
 
-function generateBoard(){
+function generateBoards(){
 
-let name = document.getElementById("shopName").value.trim();
-let services = document.getElementById("services").value.trim();
-let widthFt = parseFloat(document.getElementById("width").value);
-let heightFt = parseFloat(document.getElementById("height").value);
-let logoFile = document.getElementById("logoUpload").files[0];
+let title = document.getElementById("titleInput").value || "Your Shop Name";
+let subtitle = document.getElementById("subtitleInput").value || "Your Tagline Here";
+let width = parseFloat(document.getElementById("widthInput").value) || 10;
+let height = parseFloat(document.getElementById("heightInput").value) || 3;
+let logoFile = document.getElementById("logoInput").files[0];
 let logoPosition = document.getElementById("logoPosition").value;
 
-if(!name || !widthFt || !heightFt){
-    alert("Enter name and board size");
-    return;
-}
+let preview = document.getElementById("preview");
+preview.innerHTML = "";
 
-let output = document.getElementById("output");
-output.innerHTML = "";
+/* Auto Font Size Based On Width */
+let titleSize = Math.min(Math.max(width * 12, 28), 120);
+let subtitleSize = titleSize * 0.35;
 
-/* SCALE LOGIC */
-let baseHeight = 250;
-let ratio = widthFt / heightFt;
-let boardHeight = baseHeight;
-let boardWidth = boardHeight * ratio;
+/* 6 Design Variations */
+let designs = [
 
-/* Limit max width */
-if(boardWidth > 1200){
-    boardWidth = 1200;
-    boardHeight = boardWidth / ratio;
-}
+{bg:"#0d1b2a", titleColor:"#ffffff", subColor:"#fca311", font:"Montserrat"},
+{bg:"#000000", titleColor:"#f4d35e", subColor:"#ffffff", font:"Bebas Neue"},
+{bg:"#14213d", titleColor:"#ffffff", subColor:"#e5e5e5", font:"Poppins"},
+{bg:"#ffffff", titleColor:"#111111", subColor:"#444444", font:"Playfair Display"},
+{bg:"#1a1a1a", titleColor:"#00ffcc", subColor:"#ffffff", font:"Oswald"},
+{bg:"#2b2d42", titleColor:"#edf2f4", subColor:"#ef233c", font:"Raleway"}
+
+];
+
+function createBoard(design){
 
 let board = document.createElement("div");
 board.className = "board";
-board.style.width = boardWidth + "px";
-board.style.height = boardHeight + "px";
-board.style.background = "#13294b";
-board.style.color = "#ffffff";
+board.style.background = design.bg;
+board.style.height = (height * 40) + "px";
 
-let inner = document.createElement("div");
-inner.style.display = "flex";
-inner.style.alignItems = "center";
-inner.style.width = "100%";
-inner.style.height = "100%";
-inner.style.gap = "30px";
+let textArea = document.createElement("div");
+textArea.className = "text-area";
 
-let textBlock = document.createElement("div");
-textBlock.className = "text-block";
-textBlock.style.flex = "1";
+let titleEl = document.createElement("h1");
+titleEl.className = "title";
+titleEl.innerText = title;
+titleEl.style.color = design.titleColor;
+titleEl.style.fontSize = titleSize + "px";
+titleEl.style.fontFamily = design.font;
 
-let nameEl = document.createElement("div");
-nameEl.className = "name";
-nameEl.innerText = name;
+let subEl = document.createElement("div");
+subEl.className = "subtitle";
+subEl.innerText = subtitle;
+subEl.style.color = design.subColor;
+subEl.style.fontSize = subtitleSize + "px";
+subEl.style.fontFamily = design.font;
 
-let servicesEl = document.createElement("div");
-servicesEl.className = "services";
-servicesEl.innerText = services;
+textArea.appendChild(titleEl);
+textArea.appendChild(subEl);
 
-textBlock.appendChild(nameEl);
-if(services) textBlock.appendChild(servicesEl);
-
-function finalizeLayout(logoImg){
-
-if(logoImg){
-
-let logoMaxHeight = boardHeight * 0.6;
-logoImg.style.maxHeight = logoMaxHeight + "px";
-logoImg.style.maxWidth = boardWidth * 0.3 + "px";
-logoImg.className = "logo";
-
-if(logoPosition === "left"){
-inner.style.flexDirection = "row";
-inner.appendChild(logoImg);
-inner.appendChild(textBlock);
-}
-
-if(logoPosition === "right"){
-inner.style.flexDirection = "row";
-inner.appendChild(textBlock);
-inner.appendChild(logoImg);
-}
-
-if(logoPosition === "top"){
-inner.style.flexDirection = "column";
-inner.appendChild(logoImg);
-inner.appendChild(textBlock);
-}
-
-}else{
-inner.style.justifyContent = "center";
-inner.appendChild(textBlock);
-}
-
-/* FONT SCALING BASED ON HEIGHT */
-let nameSize = boardHeight * 0.25;
-let serviceSize = boardHeight * 0.08;
-
-autoFit(nameEl, nameSize);
-autoFit(servicesEl, serviceSize);
-
-board.appendChild(inner);
-output.appendChild(board);
-}
+/* Logo Handling */
 
 if(logoFile){
 let reader = new FileReader();
 reader.onload = function(e){
-let img = document.createElement("img");
-img.src = e.target.result;
-finalizeLayout(img);
-};
+
+let logo = document.createElement("img");
+logo.src = e.target.result;
+logo.className = "logo";
+
+if(logoPosition === "left"){
+board.appendChild(logo);
+board.appendChild(textArea);
+}
+else if(logoPosition === "right"){
+board.appendChild(textArea);
+board.appendChild(logo);
+}
+else if(logoPosition === "top"){
+board.style.flexDirection = "column";
+logo.style.marginBottom = "15px";
+board.appendChild(logo);
+board.appendChild(textArea);
+}
+
+}
 reader.readAsDataURL(logoFile);
-}else{
-finalizeLayout(null);
+}
+else{
+board.appendChild(textArea);
 }
 
+preview.appendChild(board);
 }
 
-function autoFit(element, maxSize){
-let size = maxSize;
-element.style.fontSize = size + "px";
+designs.forEach(d => createBoard(d));
 
-while(element.scrollWidth > element.parentElement.clientWidth && size > 10){
-size--;
-element.style.fontSize = size + "px";
-}
 }
 
 </script>
