@@ -176,7 +176,19 @@ Create Mockup (Design Studio)
 
 <!-- ADD DESIGN STUDIO HERE -->
 <div id="designStudioSection" style="display:none; margin-top:50px;">
-   ...
+
+<h2>Professional Design Studio</h2>
+
+<canvas id="designCanvas" width="900" height="400" 
+        style="border:2px solid #ccc; border-radius:10px;"></canvas>
+
+<br><br>
+
+<button onclick="addTextToCanvas()">Add Text</button>
+<button onclick="addRect()">Add Rectangle</button>
+<button onclick="addCircle()">Add Circle</button>
+<button onclick="downloadCanvas()">Download PNG</button>
+
 </div>
 
 <script>
@@ -184,6 +196,17 @@ Create Mockup (Design Studio)
 let previousBatch = [];
 
 function generateBoards(){
+    function openDesignStudio(){
+
+    // Show Design Studio section
+    document.getElementById("designStudioSection").style.display = "block";
+
+    // Scroll to it smoothly
+    document.getElementById("designStudioSection").scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
 
 let title = document.getElementById("titleInput").value || "Your Shop Name";
 let subtitle = document.getElementById("subtitleInput").value || "Your Tagline Here";
