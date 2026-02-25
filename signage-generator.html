@@ -195,16 +195,88 @@ Create Mockup (Design Studio)
 
 let previousBatch = [];
 
-function generateBoards(){
-    function openDesignStudio(){
+<script>
 
+let previousBatch = [];
+
+/* 1️⃣ DESIGN STUDIO FUNCTIONS HERE (OUTSIDE) */
+
+let canvas;
+let studioInitialized = false;
+
+function openDesignStudio(){
+    document.getElementById("designStudioSection").style.display = "block";
+    document.getElementById("designStudioSection").scrollIntoView({
+        behavior: "smooth"
+    });
+
+    if(!studioInitialized){
+        canvas = new fabric.Canvas('designCanvas');
+        studioInitialized = true;
+    }
+}
+
+function addTextToCanvas(){
+    let text = new fabric.Textbox("Your Text", {
+        left: 100,
+        top: 100,
+        fontSize: 40,
+        fill: "#000"
+    });
+    canvas.add(text);
+}
+
+function addRect(){
+    let rect = new fabric.Rect({
+        left: 150,
+        top: 150,
+        fill: 'blue',
+        width: 150,
+        height: 80
+    });
+    canvas.add(rect);
+}
+
+function addCircle(){
+    let circle = new fabric.Circle({
+        left: 200,
+        top: 200,
+        radius: 50,
+        fill: 'red'
+    });
+    canvas.add(circle);
+}
+
+function downloadCanvas(){
+    let dataURL = canvas.toDataURL({ format: 'png' });
+
+    let link = document.createElement('a');
+    link.href = dataURL;
+    link.download = "design.png";
+    link.click();
+}
+
+/* 2️⃣ THEN YOUR generateBoards FUNCTION */
+
+function generateBoards(){
+
+    // DO NOT PUT openDesignStudio HERE
+
+    let title = document.getElementById("titleInput").value || "Your Shop Name";
+    ...
+    // rest of your existing code
+}
+
+</script>
+    function generateBoards(){
+   
     // Show Design Studio section
     document.getElementById("designStudioSection").style.display = "block";
 
     // Scroll to it smoothly
     document.getElementById("designStudioSection").scrollIntoView({
         behavior: "smooth"
-    });
+   });
 
 }
 
