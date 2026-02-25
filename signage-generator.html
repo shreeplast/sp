@@ -175,11 +175,12 @@ button {
 </a>
 <div class="preview-container" id="preview"></div>
 
-
 </div>
-function generateBoards(){
+<script>
+let previousBatch = [];
+        
+        function generateBoards(){
 
-        let title = document.getElementById("titleInput").value || "Your Shop Name";
         let title = document.getElementById("titleInput").value || "Your Shop Name";
         let subtitle = document.getElementById("subtitleInput").value || "Your Tagline Here";
         let widthFeet = parseFloat(document.getElementById("widthInput").value) || 10;
