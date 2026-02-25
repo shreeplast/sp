@@ -167,8 +167,6 @@ button {
 </select>
 
 <button onclick="generateBoards()">Generate 6 Mockups</button>
-<button onclick="openDesignStudio()" style="margin-top:10px; background:#222;">
-Create Mockup (Design Studio)
 </button>
     <a href="studio/index.html" target="_blank">
     <button style="margin-top:10px; background:#222;">
@@ -178,106 +176,8 @@ Create Mockup (Design Studio)
 <div class="preview-container" id="preview"></div>
 
 
-<h2>Professional Design Studio</h2>
-
-<canvas id="designCanvas" width="900" height="400" 
-        style="border:2px solid #ccc; border-radius:10px;"></canvas>
-
-<br><br>
-
-<button onclick="addTextToCanvas()">Add Text</button>
-<button onclick="addRect()">Add Rectangle</button>
-<button onclick="addCircle()">Add Circle</button>
-<button onclick="downloadCanvas()">Download PNG</button>
-
 </div>
 
-<script>
-
-let previousBatch = [];
-
-/* ============================= */
-/* DESIGN STUDIO FUNCTIONS */
-/* ============================= */
-
-let canvas;
-let studioInitialized = false;
-
-function openDesignStudio(){
-    document.getElementById("designStudioSection").style.display = "block";
-    document.getElementById("designStudioSection").scrollIntoView({
-        behavior: "smooth"
-    });
-
-    if(!studioInitialized){
-        canvas = new fabric.Canvas('designCanvas');
-        studioInitialized = true;
-    }
-}
-
-function addTextToCanvas(){
-    let text = new fabric.Textbox("Your Text", {
-        left: 100,
-        top: 100,
-        fontSize: 40,
-        fill: "#000"
-    });
-    canvas.add(text);
-}
-
-function addRect(){
-    let rect = new fabric.Rect({
-        left: 150,
-        top: 150,
-        fill: 'blue',
-        width: 150,
-        height: 80
-    });
-    canvas.add(rect);
-}
-
-function addCircle(){
-    let circle = new fabric.Circle({
-        left: 200,
-        top: 200,
-        radius: 50,
-        fill: 'red'
-    });
-    canvas.add(circle);
-}
-
-function downloadCanvas(){
-    let dataURL = canvas.toDataURL({ format: 'png' });
-
-    let link = document.createElement('a');
-    link.href = dataURL;
-    link.download = "design.png";
-    link.click();
-}
-
-/* ============================= */
-/* YOUR ORIGINAL generateBoards */
-/* ============================= */
-
-function generateBoards(){
-
-    let title = document.getElementById("titleInput").value || "Your Shop Name";
-    let subtitle = document.getElementById("subtitleInput").value || "Your Tagline Here";
-    let widthFeet = parseFloat(document.getElementById("widthInput").value) || 10;
-    let heightFeet = parseFloat(document.getElementById("heightInput").value) || 3;
-    let logoFile = document.getElementById("logoInput").files[0];
-    let logoPosition = document.getElementById("logoPosition").value;
-
-    let preview = document.getElementById("preview");
-    preview.innerHTML = "";
-
-    let boardWidth = widthFeet * 100;
-    let boardHeight = heightFeet * 70;
-
-    // KEEP REST OF YOUR EXISTING MOCKUP CODE HERE
-}
-
-</script>
     
     // Scroll to it smoothly
     document.getElementById("designStudioSection").scrollIntoView({
