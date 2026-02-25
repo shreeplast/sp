@@ -177,8 +177,23 @@ button {
 
 
 </div>
+function generateBoards(){
 
-    
+        let title = document.getElementById("titleInput").value || "Your Shop Name";
+        let title = document.getElementById("titleInput").value || "Your Shop Name";
+        let subtitle = document.getElementById("subtitleInput").value || "Your Tagline Here";
+        let widthFeet = parseFloat(document.getElementById("widthInput").value) || 10;
+        let logoFile = document.getElementById("logoInput").files[0];
+        let logoFile = document.getElementById("logoInput").files[0];
+
+        let preview = document.getElementById("preview");
+        preview.innerHTML = "";
+        let boardWidth = widthFeet * 100; 
+        let boardHeight = heightFeet * 70;
+        // KEEP REST OF YOUR EXISTING MOCKUP CODE HERE 
+        }
+        </script>
+        
     // Scroll to it smoothly
     document.getElementById("designStudioSection").scrollIntoView({
         behavior: "smooth"
