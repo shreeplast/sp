@@ -229,22 +229,74 @@ let fonts = [
 "Bungee","Press Start 2P","Monoton","Audiowide"
 ];
 
-let marathiFonts = [
+let marathiThin = [
 "Noto Sans Devanagari",
-"Noto Serif Devanagari",
 "Hind",
-"Tiro Devanagari Marathi",
 "Mukta",
 "IBM Plex Sans Devanagari",
-"Baloo 2",
 "Yantramanav",
 "Khand",
-"Modak",
+"Rajdhani",
+"Pragati Narrow",
+"Varta",
+"Halant",
+"Gotu",
+"Asar",
+"Sahitya",
+"Sumana",
+"Laila"
+];
+let marathiMedium = [
+"Tiro Devanagari Marathi",
+"Noto Serif Devanagari",
+"Karma",
+"Kurale",
 "Rozha One",
+"Sarpanch",
+"Glegoo",
+"Martel",
+"Eczar",
+"Cambay",
+"Arya",
+"Biryani",
+"Rhodium Libre",
+"Sanskrit Text",
+"Vesper Libre",
+"Changa",
+"Ranga",
+"Timmana",
+"Sura",
+"Modak"
+];
+let marathiThick = [
+"Baloo 2",
 "Yatra One",
 "Tillana",
+"Baloo Bhai 2",
+"Baloo Paaji 2",
+"Baloo Tamma 2",
+"Rozha One",
 "Sarpanch",
-"Rajdhani"
+"Modak",
+"Changa"
+];
+let marathiFancy = [
+"Yatra One",
+"Tillana",
+"Modak",
+"Sarpanch",
+"Changa",
+"Ranga",
+"Timmana",
+"Sanskrit Text",
+"Rozha One",
+"Eczar"
+];
+let marathiAll = [
+...marathiThin,
+...marathiMedium,
+...marathiThick,
+...marathiFancy
 ];
 
 /* ===== PROFESSIONAL BACKGROUND PALETTE ===== */
@@ -351,11 +403,55 @@ let titleEl = document.createElement("div");
 titleEl.textContent = title;
 titleEl.style.color = design.titleColor;
 if(isMarathi(title)){
-    titleEl.style.fontFamily = randomItem(marathiFonts);
-}else{
-    titleEl.style.fontFamily = design.font;
+
+    let categoryRoll = Math.random();
+    let selectedFont;
+    let fontType;
+
+    if(categoryRoll < 0.4){
+        selectedFont = randomItem(marathiThin);
+        fontType = "thin";
+    }
+    else if(categoryRoll < 0.8){
+        selectedFont = randomItem(marathiMedium);
+        fontType = "medium";
+    }
+    else{
+        selectedFont = randomItem(marathiThick);
+        fontType = "thick";
+    }
+
+    // 20% chance of fancy override
+    if(Math.random() < 0.2){
+        selectedFont = randomItem(marathiFancy);
+        fontType = "fancy";
+    }
+
+    titleEl.style.fontFamily = selectedFont;
+
+    // Weight balancing
+    if(fontType === "thin"){
+        titleEl.style.fontWeight = "800";
+        titleEl.style.letterSpacing = "1px";
+    }
+    else if(fontType === "medium"){
+        titleEl.style.fontWeight = "700";
+        titleEl.style.letterSpacing = "0.5px";
+    }
+    else if(fontType === "thick"){
+        titleEl.style.fontWeight = "600";
+        titleEl.style.letterSpacing = "0px";
+    }
+    else{
+        titleEl.style.fontWeight = "700";
+        titleEl.style.letterSpacing = "0.5px";
+    }
+
 }
-titleEl.style.fontWeight = "800";
+else{
+    titleEl.style.fontFamily = design.font;
+    titleEl.style.fontWeight = "800";
+}
 titleEl.style.whiteSpace = "pre-wrap";
 titleEl.style.textAlign = "center";
 
