@@ -319,6 +319,22 @@ let textColors = [
 "#d90429","#ffba08","#4361ee","#4cc9f0","#7209b7"
 ];
 
+function downloadBoard(boardElement, fileName){
+
+    html2canvas(boardElement, {
+        scale: 3, // High resolution (increase to 4 if needed)
+        useCORS: true,
+        backgroundColor: null
+    }).then(canvas => {
+
+        let link = document.createElement("a");
+        link.download = fileName.replace(/\s+/g, "_") + ".jpg";
+        link.href = canvas.toDataURL("image/jpeg", 1.0);
+        link.click();
+
+    });
+}
+                
 /* Random Utility */
 function randomItem(arr){
 return arr[Math.floor(Math.random()*arr.length)];
@@ -556,7 +572,21 @@ if(subtitle !== ""){
 
 }
 
+// Create Download Button
+let downloadBtn = document.createElement("button");
+downloadBtn.textContent = "Download JPEG";
+downloadBtn.style.marginBottom = "40px";
+downloadBtn.style.background = "#111";
+downloadBtn.style.width = "200px";
+downloadBtn.style.display = "block";
+downloadBtn.style.margin = "10px auto 40px auto";
+
+downloadBtn.onclick = function(){
+    downloadBoard(board, title);
+};
+
 preview.appendChild(board);
+preview.appendChild(downloadBtn);
 
 }
 
