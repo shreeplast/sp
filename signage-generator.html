@@ -460,9 +460,38 @@ let subEl = document.createElement("div");
 subEl.textContent = subtitle;
 subEl.style.color = design.subColor;
 if(isMarathi(subtitle)){
-    subEl.style.fontFamily = randomItem(marathiFonts);
-}else{
+
+    let categoryRoll = Math.random();
+    let selectedFont;
+
+    if(categoryRoll < 0.4){
+        selectedFont = randomItem(marathiThin);
+        subEl.style.fontWeight = "700";
+        subEl.style.letterSpacing = "1px";
+    }
+    else if(categoryRoll < 0.8){
+        selectedFont = randomItem(marathiMedium);
+        subEl.style.fontWeight = "600";
+        subEl.style.letterSpacing = "0.5px";
+    }
+    else{
+        selectedFont = randomItem(marathiThick);
+        subEl.style.fontWeight = "500";
+        subEl.style.letterSpacing = "0px";
+    }
+
+    // 20% fancy chance
+    if(Math.random() < 0.2){
+        selectedFont = randomItem(marathiFancy);
+        subEl.style.fontWeight = "600";
+    }
+
+    subEl.style.fontFamily = selectedFont;
+
+}
+else{
     subEl.style.fontFamily = design.font;
+    subEl.style.fontWeight = "600";
 }
 subEl.style.whiteSpace = "pre-wrap";
 subEl.style.marginTop = "10px";
@@ -520,7 +549,9 @@ board.appendChild(content);
 
 setTimeout(()=>{
 fitTextWidthPriority(titleEl, boardWidth * 0.9, boardHeight * 0.7);
-fitTextWidthPriority(subEl, boardWidth * 0.9, boardHeight * 0.25);
+if(subtitle !== ""){
+    fitTextWidthPriority(subEl, boardWidth * 0.9, boardHeight * 0.25);
+}
 },10);
 
 }
