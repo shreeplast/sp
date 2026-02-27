@@ -57,6 +57,21 @@ family=Bungee&
 family=Press+Start+2P&
 family=Monoton&
 family=Audiowide&
+family=Noto+Sans+Devanagari:wght@700&
+family=Noto+Serif+Devanagari:wght@700&
+family=Hind:wght@700&
+family=Tiro+Devanagari+Marathi:wght@700&
+family=Mukta:wght@700&
+family=IBM+Plex+Sans+Devanagari:wght@700&
+family=Baloo+2:wght@700&
+family=Yantramanav:wght@700&
+family=Khand:wght@700&
+family=Modak&
+family=Rozha+One&
+family=Yatra+One&
+family=Tillana&
+family=Sarpanch&
+family=Rajdhani:wght@700&
 display=swap" rel="stylesheet">
 
 <style>
@@ -177,12 +192,15 @@ button {
 
 </div>
 <script>
-let previousBatch = [];
+function isMarathi(text){
+    return /[\u0900-\u097F]/.test(text);
+}
+        let previousBatch = [];
         
         function generateBoards(){
 
         let title = document.getElementById("titleInput").value || "Your Shop Name";
-        let subtitle = document.getElementById("subtitleInput").value || "Your Tagline Here";
+        let subtitle = document.getElementById("subtitleInput").value.trim();
         let widthFeet = parseFloat(document.getElementById("widthInput").value) || 10;
         let heightFeet = parseFloat(document.getElementById("heightInput").value) || 3;
         let logoFile = document.getElementById("logoInput").files[0];
@@ -209,6 +227,24 @@ let fonts = [
 "Righteous","Permanent Marker","Kaushan Script","Marcellus",
 "Playball","Unica One","Black Ops One","Fredericka the Great",
 "Bungee","Press Start 2P","Monoton","Audiowide"
+];
+
+let marathiFonts = [
+"Noto Sans Devanagari",
+"Noto Serif Devanagari",
+"Hind",
+"Tiro Devanagari Marathi",
+"Mukta",
+"IBM Plex Sans Devanagari",
+"Baloo 2",
+"Yantramanav",
+"Khand",
+"Modak",
+"Rozha One",
+"Yatra One",
+"Tillana",
+"Sarpanch",
+"Rajdhani"
 ];
 
 /* ===== PROFESSIONAL BACKGROUND PALETTE ===== */
@@ -311,7 +347,11 @@ content.style.width = "100%";
 let titleEl = document.createElement("div");
 titleEl.textContent = title;
 titleEl.style.color = design.titleColor;
-titleEl.style.fontFamily = design.font;
+if(isMarathi(title)){
+    titleEl.style.fontFamily = randomItem(marathiFonts);
+}else{
+    titleEl.style.fontFamily = design.font;
+}
 titleEl.style.whiteSpace = "pre-wrap";
 titleEl.style.textAlign = "center";
 
@@ -319,13 +359,20 @@ titleEl.style.textAlign = "center";
 let subEl = document.createElement("div");
 subEl.textContent = subtitle;
 subEl.style.color = design.subColor;
-subEl.style.fontFamily = design.font;
+if(isMarathi(subtitle)){
+    subEl.style.fontFamily = randomItem(marathiFonts);
+}else{
+    subEl.style.fontFamily = design.font;
+}
 subEl.style.whiteSpace = "pre-wrap";
 subEl.style.marginTop = "10px";
 subEl.style.textAlign = "center";
 
 content.appendChild(titleEl);
-content.appendChild(subEl);
+
+if(subtitle !== ""){
+    content.appendChild(subEl);
+}
 
 /* Logo Logic */
 if(logoFile){
@@ -358,7 +405,9 @@ board.appendChild(content);
 
 setTimeout(()=>{
 fitText(titleEl, content.clientWidth, boardHeight * 0.5);
-fitText(subEl, content.clientWidth, boardHeight * 0.25);
+if(subtitle !== ""){
+    fitText(subEl, content.clientWidth, boardHeight * 0.25);
+}
 },10);
 
 }
