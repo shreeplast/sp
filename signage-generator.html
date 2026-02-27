@@ -300,19 +300,22 @@ return design;
 }
 
 /* Auto Fit Engine */
-function fitText(element, maxWidth, maxHeight){
+function fitTextWidthPriority(element, maxWidth, maxHeight){
 
-let size = 250;
-element.style.fontSize = size + "px";
+    let size = 300;
+    element.style.fontSize = size + "px";
 
-while(
-(element.scrollWidth > maxWidth ||
-element.scrollHeight > maxHeight)
-&& size > 12
-){
-size--;
-element.style.fontSize = size + "px";
-}
+    // First shrink by WIDTH only
+    while(element.scrollWidth > maxWidth && size > 12){
+        size--;
+        element.style.fontSize = size + "px";
+    }
+
+    // Then check height safety
+    while(element.scrollHeight > maxHeight && size > 12){
+        size--;
+        element.style.fontSize = size + "px";
+    }
 }
 
 /* Generate 6 New Mockups */
@@ -352,6 +355,7 @@ if(isMarathi(title)){
 }else{
     titleEl.style.fontFamily = design.font;
 }
+titleEl.style.fontWeight = "800";
 titleEl.style.whiteSpace = "pre-wrap";
 titleEl.style.textAlign = "center";
 
@@ -404,9 +408,9 @@ board.appendChild(content);
 }
 
 setTimeout(()=>{
-fitText(titleEl, content.clientWidth, boardHeight * 0.5);
+fitTextWidthPriority(titleEl, content.clientWidth, boardHeight * 0.7);
 if(subtitle !== ""){
-    fitText(subEl, content.clientWidth, boardHeight * 0.25);
+    fitTextWidthPriority(subEl, content.clientWidth, boardHeight * 0.25);
 }
 },10);
 
@@ -419,8 +423,8 @@ else{
 board.appendChild(content);
 
 setTimeout(()=>{
-fitText(titleEl, boardWidth * 0.9, boardHeight * 0.5);
-fitText(subEl, boardWidth * 0.9, boardHeight * 0.25);
+fitTextWidthPriority(titleEl, boardWidth * 0.9, boardHeight * 0.7);
+fitTextWidthPriority(subEl, boardWidth * 0.9, boardHeight * 0.25);
 },10);
 
 }
