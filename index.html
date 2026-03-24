@@ -99,19 +99,28 @@
 <!-- GALLERY -->
 <section id="gallery" class="gallery">
     <h2>Our Work</h2>
-    <div class="gallery-grid">
-        <img src="images/work1.jpeg" alt="Work 1">
-        <img src="images/work2.jpeg" alt="Work 2">
-        <img src="images/work3.jpeg" alt="Work 3">
-        <img src="images/work4.jpeg" alt="Work 4">
-        <img src="images/work5.jpeg" alt="Work 5">
-        <img src="images/work6.jpeg" alt="Work 6">
-        <img src="images/work7.jpeg" alt="Work 7">
-        <img src="images/work8.jpeg" alt="Work 8">
-        <img src="images/work9.jpeg" alt="Work 9">
-        <img src="images/work10.jpeg" alt="Work 10">
-        <img src="images/work11.jpeg" alt="Work 11">
+    <div class="gallery-wrapper">
+    
+    <button class="nav-btn left" onclick="scrollGallery(-1)">❮</button>
+    
+    <div class="gallery-slider" id="gallerySlider">
+        <img src="images/work1.jpeg">
+        <img src="images/work2.jpeg">
+        <img src="images/work3.jpeg">
+        <img src="images/work4.jpeg">
+        <img src="images/work5.jpeg">
+        <img src="images/work6.jpeg">
+        <img src="images/work7.jpeg">
+        <img src="images/work8.jpeg">
+        <img src="images/work9.jpeg">
+        <img src="images/work10.jpeg">
+        <img src="images/work11.jpeg">
     </div>
+
+    <button class="nav-btn right" onclick="scrollGallery(1)">❯</button>
+
+</div>
+    
 </section>
 
 <!-- CONTACT -->
@@ -182,7 +191,6 @@
     💬
 </a>
 
-</body>
 <!-- NAVIGATION BAR -->
 <nav class="navbar">
     <div class="nav-container">
@@ -195,4 +203,16 @@
         </div>
     </div>
 </nav>
+    <script>
+function scrollGallery(direction) {
+    const slider = document.getElementById("gallerySlider");
+    const scrollAmount = 300;
+
+    slider.scrollBy({
+        left: direction * scrollAmount,
+        behavior: "smooth"
+    });
+}
+</script>
+</body>
 </html>
