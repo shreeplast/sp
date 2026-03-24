@@ -299,5 +299,63 @@ footer {
 .generate-btn:hover {
     background: #009f7a;
 }
+/* ===== HORIZONTAL GALLERY SLIDER ===== */
 
+.gallery-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding: 20px 0;
+}
+
+.gallery-slider {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 20px;
+    padding: 10px;
+}
+
+.gallery-slider img {
+    height: 220px;
+    border-radius: 10px;
+    flex-shrink: 0;
+    transition: transform 0.3s;
+}
+
+.gallery-slider img:hover {
+    transform: scale(1.05);
+}
+
+/* Hide scrollbar */
+.gallery-slider::-webkit-scrollbar {
+    display: none;
+}
+
+/* Buttons */
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: orange;
+    border: none;
+    color: black;
+    font-size: 24px;
+    padding: 10px 15px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 50%;
+}
+
+.nav-btn.left {
+    left: 10px;
+}
+
+.nav-btn.right {
+    right: 10px;
+}
+
+.nav-btn:hover {
+    background: #ffb84d;
 }
